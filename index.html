@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'%3e%3cpath d='M10.5 18H8.5V6H13.65C15.45 6 16.5 7.05 16.5 8.85C16.5 9.95 16 10.85 15.1 11.4L17 18H14.8L13.1 12H10.5V18ZM10.5 10.5H13.5C14.35 10.5 15 9.85 15 9C15 8.15 14.35 7.5 13.5 7.5H10.5V10.5Z'/%3e%3c/svg%3e" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RANDHAWA Bites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              gray: {
+                50: '#f9fafb',
+                100: '#f3f4f6',
+                200: '#e5e7eb',
+                300: '#d1d5db',
+                400: '#9ca3af',
+                500: '#6b7280',
+                600: '#4b5563',
+                700: '#374151',
+                800: '#1f2937',
+                900: '#111827',
+              },
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      html {
+        color-scheme: dark;
+      }
+      /* Custom scrollbar for modern look */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #374151; /* gray-700 */
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #4b5563; /* gray-600 */
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "recharts": "https://aistudiocdn.com/recharts@^3.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.8.2"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-100 dark:bg-gray-900">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
