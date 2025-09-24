@@ -1,11 +1,12 @@
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { MenuItem, OrderItem, Category } from '../types';
-// FIX: Changed to a named import to match the export from PaymentModal.tsx
+import { MenuItem, OrderItem, Category, Variant } from '../types';
 import { PaymentModal } from './PaymentModal';
 import { useOrder } from '../contexts/OrderContext';
 import MenuEditModal from './MenuEditModal';
+import VariantSelectionModal from './VariantSelectionModal';
 
 const TAKEAWAY_ID = 999;
 
@@ -41,15 +42,18 @@ const MenuItemCard: React.FC<{
     <img src={item.imageUrl} alt={item.name} className="w-full h-32 object-cover" crossOrigin="anonymous" />
     <div className="p-4 flex-grow flex flex-col justify-between">
       <h3 className="font-semibold text-gray-800 dark:text-gray-200">{item.name}</h3>
-      <p className="text-gray-600 dark:text-gray-400 mt-2">Rs {item.price.toFixed(0)}</p>
+      <p className="text-gray-600 dark:text-gray-400 mt-2">
+        Rs {item.variants[0].price.toFixed(0)}
+        {item.variants.length > 1 ? '+' : ''}
+      </p>
     </div>
   </div>
 );
 
 const OrderPanel: React.FC<{
   orderItems: OrderItem[];
-  onQuantityChange: (itemId: number, newQuantity: number) => void;
-  onRemove: (itemId: number) => void;
+  onQuantityChange: (orderKey: string, newQuantity: number) => void;
+  onRemove: (orderKey: string) => void;
   onPay: () => void;
   subtotal: number;
   tax: number;
@@ -79,19 +83,19 @@ const OrderPanel: React.FC<{
       ) : (
         <ul className="space-y-4">
           {orderItems.map(item => (
-            <li key={item.id} className="flex items-center space-x-4">
+            <li key={item.orderKey} className="flex items-center space-x-4">
               <img src={item.imageUrl} alt={item.name} className="w-16 h-16 rounded-md object-cover" crossOrigin="anonymous"/>
               <div className="flex-grow">
                 <p className="font-semibold text-gray-700 dark:text-gray-300">{item.name}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Rs {item.price.toFixed(0)}</p>
               </div>
               <div className="flex items-center space-x-2">
-                <button onClick={() => onQuantityChange(item.id, item.quantity - 1)} className="w-6 h-6 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">-</button>
+                <button onClick={() => onQuantityChange(item.orderKey, item.quantity - 1)} className="w-6 h-6 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">-</button>
                 <span>{item.quantity}</span>
-                <button onClick={() => onQuantityChange(item.id, item.quantity + 1)} className="w-6 h-6 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">+</button>
+                <button onClick={() => onQuantityChange(item.orderKey, item.quantity + 1)} className="w-6 h-6 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">+</button>
               </div>
-              <button onClick={() => onRemove(item.id)} className="text-red-500 hover:text-red-700">
-                <svg xmlns="http://www.ww3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              <button onClick={() => onRemove(item.orderKey)} className="text-red-500 hover:text-red-700">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </li>
           ))}
@@ -123,6 +127,8 @@ const POSView: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isMenuModalOpen, setMenuModalOpen] = useState(false);
   const [editingMenuItem, setEditingMenuItem] = useState<MenuItem | null>(null);
+  const [isVariantModalOpen, setVariantModalOpen] = useState(false);
+  const [selectedItemForVariants, setSelectedItemForVariants] = useState<MenuItem | null>(null);
   
   const navigate = useNavigate();
   const { 
@@ -130,6 +136,7 @@ const POSView: React.FC = () => {
     addItemToOrder,
     updateItemQuantity,
     removeItemFromOrder,
+    removeItemFromAllOrders,
     completeActiveOrder,
     getActiveOrderItems
   } = useOrder();
@@ -173,7 +180,24 @@ const POSView: React.FC = () => {
         navigate('/tables');
         return;
     }
-    addItemToOrder(itemToAdd);
+    
+    if (itemToAdd.variants.length > 1) {
+        setSelectedItemForVariants(itemToAdd);
+        setVariantModalOpen(true);
+    } else if (itemToAdd.variants.length === 1) {
+        addItemToOrder(itemToAdd, itemToAdd.variants[0]);
+    } else {
+        // Handle case for items with no variants if that's possible.
+        console.warn("Attempted to add item with no variants:", itemToAdd);
+    }
+  };
+
+  const handleVariantSelected = (variant: Variant) => {
+    if (selectedItemForVariants) {
+        addItemToOrder(selectedItemForVariants, variant);
+    }
+    setVariantModalOpen(false);
+    setSelectedItemForVariants(null);
   };
 
   const handleOpenEditModal = (item: MenuItem) => {
@@ -187,9 +211,17 @@ const POSView: React.FC = () => {
   };
 
   const handleDeleteItem = async (itemId: number) => {
-    if (window.confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
-      await api.deleteMenuItem(itemId);
-      fetchMenuData(); // Refetch menu to reflect deletion
+    if (window.confirm('Are you sure you want to delete this item? This will also remove it from any active, unpaid orders.')) {
+      // Remove from all active orders first
+      removeItemFromAllOrders(itemId);
+
+      // Then delete from the main menu list
+      const { success } = await api.deleteMenuItem(itemId);
+      if (success) {
+        fetchMenuData(); // Refetch menu to reflect deletion
+      } else {
+        alert("Failed to delete the item from the menu. Please try again.");
+      }
     }
   };
 
@@ -290,6 +322,12 @@ const POSView: React.FC = () => {
         onClose={() => setMenuModalOpen(false)}
         onSave={handleSaveMenuItem}
         item={editingMenuItem}
+      />
+      <VariantSelectionModal
+        isOpen={isVariantModalOpen}
+        onClose={() => setVariantModalOpen(false)}
+        item={selectedItemForVariants}
+        onSelectVariant={handleVariantSelected}
       />
     </div>
   );

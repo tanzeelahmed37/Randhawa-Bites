@@ -1,30 +1,31 @@
+
 import { MenuItem, Category, Table, TableStatus } from '../types';
 
 let menuItems: MenuItem[] = [
-  // Appetizers
-  { id: 1, name: 'Bruschetta', price: 2500, category: Category.Appetizers, imageUrl: 'https://images.unsplash.com/photo-1579684947550-22e945225d9a?q=80&w=400&auto=format&fit=crop' },
-  { id: 2, name: 'Calamari Fritti', price: 3500, category: Category.Appetizers, imageUrl: 'https://images.unsplash.com/photo-1599921852435-052d952a259c?q=80&w=400&auto=format&fit=crop' },
-  { id: 3, name: 'Caprese Salad', price: 2800, category: Category.Appetizers, imageUrl: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?q=80&w=400&auto=format&fit=crop' },
+  // Main Course
+  { id: 1, name: 'Chicken Karahi', category: Category.MainCourse, imageUrl: 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8da7?q=80&w=400&auto=format&fit=crop', variants: [ { name: '1kg', price: 1800 }, { name: '0.5kg', price: 950 } ] },
+  { id: 2, name: 'Mutton Karahi', category: Category.MainCourse, imageUrl: 'https://images.unsplash.com/photo-1604503462826-f33a8a3c3b88?q=80&w=400&auto=format&fit=crop', variants: [ { name: '1kg', price: 2500 }, { name: '0.5kg', price: 1300 } ] },
+  { id: 3, name: 'Chicken Biryani', category: Category.MainCourse, imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Single', price: 450 }, { name: 'Double', price: 800 } ] },
+  { id: 4, name: 'Mutton Pulao', category: Category.MainCourse, imageUrl: 'https://images.unsplash.com/photo-1631207865324-34c3b5a76472?q=80&w=400&auto=format&fit=crop', variants: [ { name: '1kg', price: 1900 }, { name: '0.5kg', price: 1000 } ] },
+
+  // Fast Food
+  { id: 5, name: 'Zinger Burger', category: Category.FastFood, imageUrl: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 600 } ] },
+  { id: 6, name: 'Chicken Tikka Pizza', category: Category.FastFood, imageUrl: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Regular', price: 1200 } ] },
+  { id: 7, name: 'Seekh Kebab Roll', category: Category.FastFood, imageUrl: 'https://images.unsplash.com/photo-1619881589716-0f7c7b6a4a44?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 350 } ] },
+  { id: 8, name: 'Samosa Chaat', category: Category.FastFood, imageUrl: 'https://images.unsplash.com/photo-1637424696512-36c53a743b6e?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 250 } ] },
   
-  // Main Courses
-  { id: 4, name: 'Spaghetti Carbonara', price: 5000, category: Category.MainCourses, imageUrl: 'https://images.unsplash.com/photo-1608796881204-56de9f74352a?q=80&w=400&auto=format&fit=crop' },
-  { id: 5, name: 'Margherita Pizza', price: 4300, category: Category.MainCourses, imageUrl: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=400&auto=format&fit=crop' },
-  { id: 6, name: 'Grilled Salmon', price: 6700, category: Category.MainCourses, imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=400&auto=format&fit=crop' },
-  { id: 7, name: 'Ribeye Steak', price: 9800, category: Category.MainCourses, imageUrl: 'https://images.unsplash.com/photo-1629237502172-875f3a398033?q=80&w=400&auto=format&fit=crop' },
-  { id: 8, name: 'Chicken Alfredo', price: 5450, category: Category.MainCourses, imageUrl: 'https://images.unsplash.com/photo-1627914029306-a9c148f438da?q=80&w=400&auto=format&fit=crop' },
+  // Sides
+  { id: 9, name: 'French Fries', category: Category.Sides, imageUrl: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Single', price: 200 }, { name: 'Double', price: 350 } ] },
+  { id: 10, name: 'Raita', category: Category.Sides, imageUrl: 'https://images.unsplash.com/photo-1626500143899-733e361b7f03?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 100 } ] },
+  { id: 11, name: 'Naan Bread', category: Category.Sides, imageUrl: 'https://images.unsplash.com/photo-1595301774393-d7a868411033?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 50 } ] },
 
   // Desserts
-  { id: 9, name: 'Tiramisu', price: 2500, category: Category.Desserts, imageUrl: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=400&auto=format&fit=crop' },
-  { id: 10, name: 'Cheesecake', price: 2400, category: Category.Desserts, imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=400&auto=format&fit=crop' },
+  { id: 12, name: 'Gulab Jamun', category: Category.Desserts, imageUrl: 'https://images.unsplash.com/photo-1631071191024-a15d2a297e61?q=80&w=400&auto=format&fit=crop', variants: [ { name: '2 pcs', price: 150 } ] },
+  { id: 13, name: 'Kheer', category: Category.Desserts, imageUrl: 'https://images.unsplash.com/photo-1628833983942-0352554e2a8c?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 200 } ] },
 
   // Beverages
-  { id: 11, name: 'Espresso', price: 1000, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop' },
-  { id: 12, name: 'Latte', price: 1400, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=400&auto=format&fit=crop' },
-  { id: 13, name: 'Iced Tea', price: 850, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c7921a3?q=80&w=400&auto=format&fit=crop' },
-
-  // Sides
-  { id: 14, name: 'Garlic Bread', price: 1250, category: Category.Sides, imageUrl: 'https://images.unsplash.com/photo-1623334057201-1454562c10a4?q=80&w=400&auto=format&fit=crop' },
-  { id: 15, name: 'French Fries', price: 1400, category: Category.Sides, imageUrl: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=400&auto=format&fit=crop' },
+  { id: 14, name: 'Lassi', category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1627734819122-0002b851f558?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Sweet', price: 250 } ] },
+  { id: 15, name: 'Soft Drink', category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1581006852262-e0349b54c1a8?q=80&w=400&auto=format&fit=crop', variants: [ { name: 'Standard', price: 100 } ] },
 ];
 
 const tables: Table[] = [
