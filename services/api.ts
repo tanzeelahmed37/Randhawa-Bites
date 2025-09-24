@@ -1,6 +1,6 @@
 import { MenuItem, Category, Table, TableStatus } from '../types';
 
-const menuItems: MenuItem[] = [
+let menuItems: MenuItem[] = [
   // Appetizers
   { id: 1, name: 'Bruschetta', price: 2500, category: Category.Appetizers, imageUrl: 'https://images.unsplash.com/photo-1579684947550-22e945225d9a?q=80&w=400&auto=format&fit=crop' },
   { id: 2, name: 'Calamari Fritti', price: 3500, category: Category.Appetizers, imageUrl: 'https://images.unsplash.com/photo-1599921852435-052d952a259c?q=80&w=400&auto=format&fit=crop' },
@@ -19,7 +19,7 @@ const menuItems: MenuItem[] = [
 
   // Beverages
   { id: 11, name: 'Espresso', price: 1000, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop' },
-  { id: 12, name: 'Latte', price: 1400, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1580661869938-35461104e745?q=80&w=400&auto=format&fit=crop' },
+  { id: 12, name: 'Latte', price: 1400, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=400&auto=format&fit=crop' },
   { id: 13, name: 'Iced Tea', price: 850, category: Category.Beverages, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c7921a3?q=80&w=400&auto=format&fit=crop' },
 
   // Sides
@@ -41,7 +41,7 @@ const tables: Table[] = [
 ];
 
 const mockApiCall = <T,>(data: T): Promise<T> => {
-  return new Promise(resolve => setTimeout(() => resolve(data), 500));
+  return new Promise(resolve => setTimeout(() => resolve(data), 200));
 };
 
 export const api = {
@@ -50,5 +50,21 @@ export const api = {
   submitOrder: (order: unknown): Promise<{ success: boolean; orderId: string }> => {
     console.log("Submitting order:", order);
     return mockApiCall({ success: true, orderId: `ORD-${Date.now()}` });
+  },
+  updateMenuItem: (updatedItem: MenuItem): Promise<MenuItem> => {
+    menuItems = menuItems.map(item => item.id === updatedItem.id ? updatedItem : item);
+    return mockApiCall(updatedItem);
+  },
+  addMenuItem: (newItemData: Omit<MenuItem, 'id'>): Promise<MenuItem> => {
+    const newId = menuItems.length > 0 ? Math.max(...menuItems.map(i => i.id)) + 1 : 1;
+    const newItem: MenuItem = { id: newId, ...newItemData };
+    menuItems.push(newItem);
+    return mockApiCall(newItem);
+  },
+  deleteMenuItem: (itemId: number): Promise<{ success: boolean }> => {
+    const initialLength = menuItems.length;
+    menuItems = menuItems.filter(item => item.id !== itemId);
+    const success = menuItems.length < initialLength;
+    return mockApiCall({ success });
   }
 };
