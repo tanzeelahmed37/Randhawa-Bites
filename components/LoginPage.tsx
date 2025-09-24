@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from 'react';
+import { RandhawaBitesLogo, RandhawaBitesIcon } from './common/Brand';
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -54,8 +55,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             return (
                 <>
                     <div className="text-center">
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Sign Up</h1>
-                        <p className="mt-2 text-gray-600 dark:text-gray-400">Enter your email to get a verification code.</p>
+                        <RandhawaBitesLogo className="w-40 h-auto mx-auto mb-4" />
+                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mt-4">Sign Up</h2>
+                        <p className="mt-1 text-gray-600 dark:text-gray-400">Enter your email to get a verification code.</p>
                     </div>
                     <form className="space-y-6" onSubmit={handleSignup}>
                         <div>
@@ -90,8 +92,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             return (
                 <>
                     <div className="text-center">
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Verify Email</h1>
-                        <p className="mt-2 text-gray-600 dark:text-gray-400">A mock verification code was sent to {email}. Enter '{MOCK_OTP}'.</p>
+                        <RandhawaBitesLogo className="w-40 h-auto mx-auto mb-4" />
+                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mt-4">Verify Email</h2>
+                        <p className="mt-1 text-gray-600 dark:text-gray-400">A mock verification code was sent to {email}. Enter '{MOCK_OTP}'.</p>
                     </div>
                     <form className="space-y-6" onSubmit={handleVerify}>
                         <div>
@@ -121,8 +124,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             return (
                 <>
                     <div className="text-center">
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">RANDHAWA'S</h1>
-                        <p className="mt-2 text-gray-600 dark:text-gray-400">Enter password '{MOCK_PASSWORD}' to continue</p>
+                        <RandhawaBitesLogo className="w-56 h-auto mx-auto mb-6" />
+                        <p className="text-gray-600 dark:text-gray-400">Enter password '{MOCK_PASSWORD}' to continue</p>
                     </div>
                     <form className="space-y-6" onSubmit={handleLogin}>
                         <div>
@@ -161,7 +164,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+      <div className="absolute top-6 left-6">
+        <RandhawaBitesIcon className="w-12 h-12" />
+      </div>
       <div className="w-full max-w-sm p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
         {renderContent()}
       </div>

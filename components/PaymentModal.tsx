@@ -51,7 +51,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ord
 
   const handlePrintReceipt = () => {
     let receiptContent = `
-        RANDHAWA'S Receipt
+        RANDHAWA Bites Receipt
 ----------------------------------------
 Date: ${new Date().toLocaleString()}
 

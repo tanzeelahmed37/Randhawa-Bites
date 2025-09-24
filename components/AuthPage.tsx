@@ -76,7 +76,7 @@ const AuthPage: React.FC = () => {
       case 'SIGN_UP':
         return {
           title: 'Create an Account',
-          description: "Get started with RANDHAWA'S",
+          description: "Get started with RANDHAWA Bites",
           buttonText: 'Sign Up',
           formFields: (
             <>
@@ -113,7 +113,7 @@ const AuthPage: React.FC = () => {
       default:
         return {
           title: 'Sign In',
-          description: "Welcome back to RANDHAWA'S",
+          description: "Welcome back to RANDHAWA Bites",
           buttonText: 'Sign In',
           formFields: (
              <>
@@ -155,7 +155,7 @@ const AuthPage: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
             <div className="w-full max-w-sm p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
                  <div className="text-center">
-                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white">RANDHAWA'S</h1>
+                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white">RANDHAWA Bites</h1>
                      <div className="mt-4 p-4 bg-yellow-100 dark:bg-yellow-900/50 border-l-4 border-yellow-500 text-yellow-800 dark:text-yellow-300 rounded-r-lg">
                         <p className="font-bold">Configuration Needed</p>
                         <p className="text-sm">Supabase has not been configured. Please add your anon public key in <code className="bg-gray-200 dark:bg-gray-700 p-1 rounded">services/supabaseClient.ts</code> to enable authentication.</p>

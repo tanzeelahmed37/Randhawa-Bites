@@ -3,6 +3,7 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { MenuIcon, DashboardIcon, TableIcon, LogoutIcon, UserIcon } from './common/Icon';
+import { RandhawaBitesIcon } from './common/Brand';
 
 interface POSLayoutProps {
   onLogout: () => void;
@@ -25,7 +26,7 @@ const POSLayout: React.FC<POSLayoutProps> = ({ onLogout }) => {
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
       {/* Sidebar */}
       <aside className="w-24 bg-white dark:bg-gray-800 shadow-lg flex flex-col items-center py-6">
-        <div className="text-indigo-600 dark:text-indigo-400 text-2xl font-bold">R</div>
+        <RandhawaBitesIcon className="w-12 h-12" />
         <nav className="flex-1 flex flex-col items-center justify-center space-y-6 mt-12">
           {navItems.map(({ to, label, icon: Icon }) => (
             <NavLink
